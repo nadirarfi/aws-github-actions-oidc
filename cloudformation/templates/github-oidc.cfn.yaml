@@ -23,9 +23,9 @@ Resources:
       Url: https://token.actions.githubusercontent.com
       ClientIdList:
         - sts.amazonaws.com
-        - !Sub https://github.com/${GitHubOrganization}/blog.nadirarfi.com
-        - !Sub https://github.com/${GitHubOrganization}/nutrify.fr
-        # - !Sub https://github.com/${GitHubOrganization}/*
+        # - !Sub https://github.com/${GitHubOrganization}/blog.nadirarfi.com
+        # - !Sub https://github.com/${GitHubOrganization}/nutrify.fr
+        - !Sub https://github.com/${GitHubOrganization}/*
       ThumbprintList:
         - 6938fd4d98bab03faadb97b34396831e3780aea1
       Tags:
