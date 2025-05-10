@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'GitHub OIDC Provider for GitHub Actions'
+
+Parameters:
+  GitHubOrganization:
+    Type: String
+    Description: GitHub organization name
+    
+  ProviderName:
+    Type: String
+    Default: GitHubOIDCProvider
+    Description: The name for the IAM OIDC provider
+    
+  SSMParameterPrefix:
+    Type: String
+    Default: /github/oidc
+    Description: SSM parameter path prefix for storing OIDC provider information
+
+Resources:
+  GitHubOIDCProvider:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList:
+        - sts.amazonaws.com
+      ThumbprintList:
+        - 6938fd4d98bab03faadb97b34396831e3780aea1
+      Tags:
+        - Key: Name
+          Value: !Ref ProviderName
+        - Key: GitHubOrg
+          Value: !Ref GitHubOrganization
+
+  SSMProviderARN:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub '${SSMParameterPrefix}/provider/arn'
+      Type: String
+      Value: !GetAtt GitHubOIDCProvider.Arn
+      Description: !Sub 'GitHub OIDC Provider ARN for ${GitHubOrganization}'
+      Tags:
+        GitHubOrg: !Ref GitHubOrganization
+
+  SSMProviderURL:
+    Type: AWS::SSM::Parameter  
+    Properties:
+      Name: !Sub '${SSMParameterPrefix}/provider/url'
+      Type: String
+      Value: !Ref GitHubOIDCProvider
+      Description: !Sub 'GitHub OIDC Provider URL for ${GitHubOrganization}'
+      Tags:
+        GitHubOrg: !Ref GitHubOrganization
+
+Outputs:
+  OIDCProviderARN:
+    Description: ARN of the GitHub OIDC provider
+    Value: !GetAtt GitHubOIDCProvider.Arn
+  OIDCProviderURL:
+    Description: URL of the GitHub OIDC provider
+    Value: !Ref GitHubOIDCProvider
+  SSMProviderARNPath:
+    Description: SSM Parameter path for the OIDC provider ARN
+    Value: !Ref SSMProviderARN
+  SSMProviderURLPath:
+    Description: SSM Parameter path for the OIDC provider URL
+    Value: !Ref SSMProviderURL

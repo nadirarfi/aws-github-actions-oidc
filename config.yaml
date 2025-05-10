@@ -1,0 +1,13 @@
+# AWS Configuration
+aws_profile: "arfin-admin"
+aws_region: "eu-west-3"
+
+# GitHub OIDC Provider Configuration
+github_organization: "nadirarfi"
+provider_stack_name: "nadir-arfi-github-oidc-provider"
+provider_name: "GitHubOIDCProvider"
+
+
+# SSM Parameter Configuration
+# The prefix for SSM parameters (Provider ARN will be at /github/oidc/provider_arn)
+ssm_parameter_prefix: "/nadirarfi/github/actions/oidc"  
